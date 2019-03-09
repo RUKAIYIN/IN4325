@@ -9,7 +9,7 @@ import pandas as pd
 
 def read_qrels():
     qrelTableList=[] 
-    with open('.\www2018-table\data\qrels.txt') as csv_file:
+    with open('./www2018-table/data/qrels.txt') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter='\t')
         line_count = 0
         for row in csv_reader:   
@@ -125,17 +125,73 @@ def countQueryLength():
 def go_through_data(session):
   #set_trace()
   session_data = session['data']
+    
+# Content Extraction based on word
+# INPUT: a line of text
+def extract_word_from_table(table):
+    words = set()
+    if (type(table['data']['title']) != str):
+        for title in table['data']['title']:
+            words.update(title.split())
+    else:
+        words.update(table['data']['title'].split())
 
+    if (type(table['data']['secondTitle']) != str):    
+        for secondTitle in table['data']['secondTitle']:
+    #         print(extract_word_from_line(secondTitle))
+            words.update(secondTitle.split())
+    else:
+        words.update(table['data']['secondTitle'].split())
+
+    if (type(table['data']['caption']) != str):    
+        for caption in table['data']['caption']:
+            words.update(caption.split())
+    else:
+        words.update(table['data']['caption'].split())
+
+    return list(words)
+
+def extract_word_from_tables(tableList)
+    tableWords = []
+    for table in tableList:
+        tableWords.append({'id':table['id'], 'query':table['query'], 'words':extract_word_from_table(table)})
+    
+    saveFile = open('tableWords.json', 'a')
+    saveFile.write(json.dumps(tableWords))
+
+del extract_word_from_queries():
+    file = open('./www2018-table/data/queries.txt', "r")
+    words = set()
+    queryId = 0
+    queryWords = []
+    for line in file.readlines():
+        l = line.split()
+        queryId = l[0]
+        l.remove(queryId)
+        words.update(l)
+        queryWords.append({'id': queryId, 'words': list(words)})
+        words = set()
+    
+    saveFile = open('queryWords.json', 'a')
+    saveFile.write(json.dumps(queryWords))
+    
+        
 
 if __name__ == "__main__":
     #to read the qrels from origina; qrels file
     qrelsTableList = read_qrels() 
 
     #Go through Whole table corpus and only extract the tables that are relevant for us. this outputs the 'tableList.json' file.
-    read_original_json_files(qrelsTableList)
+    tableList = read_original_json_files(qrelsTableList)
     
     #Extract information from the tableList that is actually relevant for us. To make the json file smaller. The output file is : 'tableListMinimized.json'
     read_table_list()
+    
+    #Extract unique words from the tableList. Output file 'tableWords.json'. Each table contains 'id', 'query' and 'words' which is a list of words
+    extract_word_from_tables(tableList)
+    
+    #Extract unique words from all queries. Output file 'queryWords.json'. Each query contains 'id', and 'words' which is a list of words
+    extract_word_from_queries()
 
     #now the WikiAPISearch python script should be run. It works on the 'tableListMinimized.json' file, it adds te query string, qlen and y rank to the list. and outputs 'FeaturesAndQueries.json'
 
@@ -146,5 +202,3 @@ if __name__ == "__main__":
     #when all of the former is done you need to uncomment the line below, and comment out the ones above to write the "final.json" to  csv.
     #the csv  file comes out unsorted but can easily be sorted by the queryid to make it more readable.
     #write_to_csv()
-    
-  
