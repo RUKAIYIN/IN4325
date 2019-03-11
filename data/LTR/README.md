@@ -4,3 +4,5 @@ This folder contains table rankings returned by Random Forest Algorithm.
 
 `our_features` contains results of LTR using our extracted features `FeaturesFinal.csv`.
 
+`out_features/LTR_feature_importance.csv` contains results of feature importances returned by Random Forest Regressor.
+
