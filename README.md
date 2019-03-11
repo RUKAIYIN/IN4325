@@ -15,3 +15,5 @@ The `data/queries.txt` file contains the search queries. Queries #1-#30 queries 
 
 The `data/qrels.txt` file contains the relevance assessments (in TREC qrels format).  
 
+The `Results` folder contains evaluation results returned by [trec_eval](https://github.com/usnistgov/trec_eval).
+
