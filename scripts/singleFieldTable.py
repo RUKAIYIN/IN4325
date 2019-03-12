@@ -1,4 +1,5 @@
 import json
+import sys
 
 # This script creates trec document format for each table
 # author: Nick Boyd
@@ -13,11 +14,21 @@ import json
 raw_json=open("../data/tableList.json").read()
 TablesJSON=json.loads(raw_json)
 
+#process script args
+includeNumbers=True
+outputFile = '../data/tableList.trec'
+arg = sys.argv[1]
+if arg == 'false':
+	includeNumbers=False
+	outputFile = '../data/tableList_wo_Numbers.trec'
+
+
+
 #Keep track of tables added to avoid duplicate tables in file.
 tablesAdded=[]
 
 def write_tables():
-	with open('../data/tableList.trec', 'w') as f:
+	with open(outputFile, 'w') as f:
 		output=''
 		for table in TablesJSON:
 			#Extract fields from json
@@ -37,6 +48,8 @@ def write_tables():
 				for column in rows:
         				body=body+column
 				output = output + body
+				if not includeNumbers:
+					output = ''.join(i for i in output if not i.isdigit())
 
 			#logic to avoid duplicate tables
 			if tableId not in tablesAdded:
