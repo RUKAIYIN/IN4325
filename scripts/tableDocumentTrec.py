@@ -66,23 +66,22 @@ def write_tables_mf():
 			caption=table["data"]["caption"]
 			title=table["data"]["title"]
 
-			output= '<TITLE>\n' + pgTitle + '\n' + secondTitle + '\n</TITLE>\n' + '<CAPTION>' + caption + '</CAPTION>\n<TR>\n'
+			output= '<TITLE>\n' + pgTitle + '\n</TITLE>\n' + '<STITLE>\n' + secondTitle + '\n</STITLE>\n'  + '<CAPTION>' + caption + '</CAPTION>\n'
 			#heading (column keys of table) is a list
 			for heading in title:
 				output = output + '<TH>' + heading + '</TH>\n'
-			output = output + '</TR>\n'
 			#loop through body of table
 			for rows in table["data"]["data"]:
-				body='<TR>\n'
+				body=''
 				for column in rows:
-			        	body= body + '<TD>' + column + '</TD>\n'
-			output = output + body + '</TR>\n'
+			        	body = body + '<TD>' + column + '</TD>\n'
+			output = output + body
 			if not includeNumbers:
 				output = ''.join(i for i in output if not i.isdigit())
 
 			#logic to avoid duplicate tables
 			if tableId not in tablesAdded:
-				print >> f, '<DOC>\n<DOCNO>' + tableId.encode('utf-8') + '</DOCNO>\n' + '<TABLE>\n' + output.encode('utf-8') + '</TABLE>' + '\n</DOC>'
+				print >> f, '<DOC>\n<DOCNO>' + tableId.encode('utf-8') + '</DOCNO>\n' + output.encode('utf-8') + '</DOC>'
 			tablesAdded.append(tableId)
 
 

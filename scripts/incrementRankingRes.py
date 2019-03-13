@@ -1,9 +1,9 @@
 import string
 import csv
 
-csvFile="../data/MultiField/DirichletLM_5.csv"
-file = open("../data/MultiField/DirichletLM_5.txt", "r")
-fileOUT = open("../data/MultiField/DirichletLM_5_FINAL.txt", "w")
+csvFile="../data/MultiField/BM25F_20.csv"
+file = open("../data/MultiField/BM25F_20.txt", "r")
+fileOUT = open("../data/MultiField/BM25F_20_FINAL.txt", "w")
 csvOut = open(csvFile, "w")
 w = csv.writer(csvOut)
 
